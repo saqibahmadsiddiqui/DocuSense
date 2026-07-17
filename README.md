@@ -2,7 +2,7 @@
 
 > Converse intelligently with your documents. Upload any set of PDFs and get grounded, source-cited answers powered by a production-grade RAG pipeline.
 
-**[Live Demo →](https://aidocusense.streamlit.app)** &nbsp;|&nbsp; **[GitHub →](https://github.com/saqibahmadsiddiqui/DocuSense)**
+**[Live Demo →](https://aidocusense.streamlit.app)**
 
 ---
 
