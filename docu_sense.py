@@ -40,7 +40,7 @@ def build_vectorstore(chunks: list) -> FAISS:
 def build_rag_chain(vector_store: FAISS, api_key: str) -> ConversationalRetrievalChain:
     llm = ChatGroq(
         api_key = api_key,
-        model_name = "llama-3.1-8b-instant",
+        model_name = "openai/gpt-oss-20b",
         temperature = 0.2
     )
 
