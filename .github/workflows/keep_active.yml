@@ -1,14 +1,52 @@
 name: Keep Streamlit Alive
-
 on:
   schedule:
-    - cron: '0 */2 * * *'  # Every 2 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - name: Ping Streamlit App
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Playwright
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "${{ secrets.STREAMLIT_APP_URL }}")
-          echo "Response: $STATUS"
+          pip install playwright
+          playwright install chromium --with-deps
+
+      - name: Wake Streamlit App
+        run: |
+          python - <<'EOF'
+          from playwright.sync_api import sync_playwright
+          import os, time
+
+          url = os.environ["STREAMLIT_APP_URL"]
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page()
+              page.goto(url, timeout=60000)
+              time.sleep(3)
+
+              # Look for the "wake up" button Streamlit shows on a sleeping app
+              try:
+                  button = page.get_by_role("button", name="Yes, get this app back up!")
+                  if button.is_visible(timeout=5000):
+                      print("App is asleep — clicking wake button")
+                      button.click()
+                      # Give it real time to boot — cold starts can take 30-60s+
+                      page.wait_for_timeout(60000)
+                  else:
+                      print("App already awake")
+              except Exception as e:
+                  print(f"No wake button found (probably already awake): {e}")
+
+              print("Final title:", page.title())
+              browser.close()
+          EOF
+        env:
+          STREAMLIT_APP_URL: ${{ secrets.STREAMLIT_APP_URL }}
