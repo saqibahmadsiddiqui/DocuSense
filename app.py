@@ -592,6 +592,58 @@ header[data-testid="stHeader"] {{ background: transparent !important; }}
     margin-top: 1px;
 }}
 
+/* ── TRANSPARENT WRAPPERS — kill inherited whites ── */
+[data-testid="stSidebar"] .element-container,
+[data-testid="stSidebar"] [data-testid="stVerticalBlock"],
+[data-testid="stSidebar"] [data-testid="stHorizontalBlock"],
+[data-testid="stSidebar"] [data-testid="column"],
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"],
+.main [data-testid="stVerticalBlock"],
+.main .element-container {{
+    background: transparent !important;
+}}
+
+/* ── FILE UPLOADER — every internal layer ── */
+[data-testid="stFileUploader"],
+[data-testid="stFileUploader"] > div,
+[data-testid="stFileUploader"] > div > div,
+[data-testid="stFileUploaderDropzone"],
+[data-testid="stFileUploader"] section {{
+    background: {uploader_bg} !important;
+    border-radius: 11px;
+}}
+[data-testid="stFileUploaderDropzone"] {{
+    border: 1.5px dashed {uploader_bdr} !important;
+    border-radius: 11px !important;
+    transition: all 0.2s ease;
+}}
+[data-testid="stFileUploaderDropzone"]:hover {{
+    border-color: {uploader_hbdr} !important;
+    background: {uploader_hbg} !important;
+}}
+
+/* ── CHAT MESSAGE WRAPPERS ── */
+[data-testid="stChatMessageContainer"],
+[data-testid="stChatMessage"] > div {{
+    background: transparent !important;
+}}
+
+/* ── BOTTOM BAR (chat input dock) ── */
+[data-testid="stBottomBlockContainer"] {{
+    background: {bg_app} !important;
+    border-top: 1px solid {hr_color} !important;
+    padding-bottom: 1rem !important;
+}}
+[data-testid="stBottomBlockContainer"] > div {{
+    background: transparent !important;
+}}
+
+/* ── CHAT INPUT — all layers ── */
+[data-testid="stChatInput"],
+[data-testid="stChatInputContainer"] {{
+    background: transparent !important;
+}}
+
 /* ── MISC ── */
 [data-testid="stSpinner"] p {{ color: {spinner_c} !important; font-size: 0.82rem !important; }}
 [data-testid="stAlert"] {{ border-radius: {alert_radius} !important; font-size: 0.82rem !important; }}
@@ -736,6 +788,7 @@ def render_sidebar():
                 st.session_state.total_queries   = 0
                 st.rerun()
 
+
 #  CHAT AREA
 def render_chat():
     # ── Hero ──
@@ -856,8 +909,10 @@ def render_chat():
 def main():
     init_session_state()
     st.markdown(get_css(st.session_state.theme), unsafe_allow_html=True)
+
     render_sidebar()
     render_chat()
+
 
 if __name__ == "__main__":
     main()
