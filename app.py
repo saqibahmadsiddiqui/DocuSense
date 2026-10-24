@@ -20,7 +20,11 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+
+# ─────────────────────────────────────────────
 #  THEME CSS
+# ─────────────────────────────────────────────
+
 def get_css(theme: str) -> str:
     d = (theme == "dark")
 
@@ -61,6 +65,10 @@ def get_css(theme: str) -> str:
         btn_tog_bdr     = "rgba(6,182,212,0.22)"
         btn_tog_hbg     = "rgba(6,182,212,0.15)"
         btn_tog_hbdr    = "rgba(6,182,212,0.42)"
+        logo_color      = "#38bdf8"
+        uploader_btn_bg = "rgba(6,182,212,0.14)"
+        uploader_btn_fg = "#67e8f9"
+        uploader_btn_bd = "rgba(6,182,212,0.30)"
         btn_clr_bg      = "rgba(239,68,68,0.07)"
         btn_clr_text    = "#fca5a5"
         btn_clr_bdr     = "rgba(239,68,68,0.22)"
@@ -140,6 +148,10 @@ def get_css(theme: str) -> str:
         btn_tog_bdr     = "rgba(79,70,229,0.17)"
         btn_tog_hbg     = "rgba(79,70,229,0.12)"
         btn_tog_hbdr    = "rgba(79,70,229,0.32)"
+        logo_color      = "#4f46e5"
+        uploader_btn_bg = "rgba(79,70,229,0.07)"
+        uploader_btn_fg = "#3730a3"
+        uploader_btn_bd = "rgba(79,70,229,0.20)"
         btn_clr_bg      = "rgba(220,38,38,0.04)"
         btn_clr_text    = "#b91c1c"
         btn_clr_bdr     = "rgba(220,38,38,0.16)"
@@ -217,6 +229,18 @@ header[data-testid="stHeader"] {{ background: transparent !important; }}
 [data-testid="stSidebar"] label,
 [data-testid="stSidebar"] div {{
     color: {text_primary};
+}}
+
+/* ── LOGO CHARACTER — prevent browser emoji rendering ── */
+.sb-logo, .hero-logo {{
+    font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+    font-variant-emoji: text !important;
+    color: {logo_color} !important;
+    -webkit-text-fill-color: {logo_color} !important;
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
 }}
 
 /* ── BRAND BLOCK ── */
@@ -592,6 +616,18 @@ header[data-testid="stHeader"] {{ background: transparent !important; }}
     margin-top: 1px;
 }}
 
+/* ── NATIVE WIDGET BACKGROUND OVERRIDE (base=light forces whites; override for dark) ── */
+[data-testid="stSidebar"] [data-testid="stFileUploader"] > div,
+[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"],
+[data-testid="stSidebar"] .stMarkdown,
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] > p,
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] > div,
+[data-testid="stBottomBlockContainer"] > div > div,
+[data-testid="stChatInputContainer"] > div {{
+    background: transparent !important;
+    color: {text_primary} !important;
+}}
+
 /* ── TRANSPARENT WRAPPERS — kill inherited whites ── */
 [data-testid="stSidebar"] .element-container,
 [data-testid="stSidebar"] [data-testid="stVerticalBlock"],
@@ -601,6 +637,28 @@ header[data-testid="stHeader"] {{ background: transparent !important; }}
 .main [data-testid="stVerticalBlock"],
 .main .element-container {{
     background: transparent !important;
+}}
+
+/* ── FILE UPLOADER INTERNAL UPLOAD BUTTON ── */
+[data-testid="stFileUploaderDropzone"] button,
+[data-testid="stFileUploader"] button,
+[data-testid="stFileUploader"] [kind="secondary"],
+[data-testid="stFileUploader"] [data-testid="baseButton-secondary"] {{
+    background: {uploader_btn_bg} !important;
+    color: {uploader_btn_fg} !important;
+    border: 1px solid {uploader_btn_bd} !important;
+    border-radius: 7px !important;
+    font-size: 0.79rem !important;
+    font-weight: 500 !important;
+    font-family: 'Inter', sans-serif !important;
+    padding: 0.33rem 0.85rem !important;
+    transition: all 0.2s ease !important;
+    box-shadow: none !important;
+}}
+[data-testid="stFileUploaderDropzone"] button:hover,
+[data-testid="stFileUploader"] button:hover {{
+    filter: brightness(1.12) !important;
+    transform: translateY(-1px) !important;
 }}
 
 /* ── FILE UPLOADER — every internal layer ── */
@@ -671,7 +729,11 @@ header[data-testid="stHeader"] {{ background: transparent !important; }}
 }}
 </style>"""
 
+
+# ─────────────────────────────────────────────
 #  SESSION STATE
+# ─────────────────────────────────────────────
+
 def init_session_state():
     defaults = {
         "messages": [],
@@ -684,7 +746,11 @@ def init_session_state():
         if k not in st.session_state:
             st.session_state[k] = v
 
+
+# ─────────────────────────────────────────────
 #  PDF PROCESSING
+# ─────────────────────────────────────────────
+
 def process_pdfs(uploaded_files):
     api_key = get_api_key()
     if not api_key:
@@ -710,7 +776,11 @@ def process_pdfs(uploaded_files):
         except Exception as e:
             st.error(f"Processing failed: {e}")
 
+
+# ─────────────────────────────────────────────
 #  SIDEBAR
+# ─────────────────────────────────────────────
+
 def render_sidebar():
     theme = st.session_state.theme
 
@@ -720,7 +790,7 @@ def render_sidebar():
         with col_brand:
             st.markdown(
                 '<div class="sb-brand">'
-                '<span class="sb-logo">✦</span>'
+                '<span class="sb-logo">✦︎</span>'
                 '<div>'
                 '<div class="sb-title">DocuSense</div>'
                 '<div class="sb-sub">AI Document Assistant</div>'
@@ -789,12 +859,15 @@ def render_sidebar():
                 st.rerun()
 
 
+# ─────────────────────────────────────────────
 #  CHAT AREA
+# ─────────────────────────────────────────────
+
 def render_chat():
     # ── Hero ──
     st.markdown(
         '<div class="hero">'
-        '<div class="hero-logo">✦</div>'
+        '<div class="hero-logo">✦︎</div>'
         '<div class="hero-title">DocuSense</div>'
         '<div class="hero-sub">Ask anything about your uploaded documents</div>'
         '<div class="tech-badges">'
