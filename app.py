@@ -388,11 +388,34 @@ header[data-testid="stHeader"] {{ background: transparent !important; }}
     vertical-align: middle !important;
 }}
 
+# /* Theme toggle — compact (no use_container_width) */
+# [data-testid="stSidebar"] .stButton > button:not([style*="width: 100%"]) {{
+#     background: {btn_tog_bg} !important;
+#     color: {btn_tog_text} !important;
+#     border: 1px solid {btn_tog_bdr} !important;
+# }}
+# [data-testid="stSidebar"] .stButton > button:not([style*="width: 100%"]):hover {{
+#     background: {btn_tog_hbg} !important;
+#     border-color: {btn_tog_hbdr} !important;
+#     transform: translateY(-1px) !important;
+#     box-shadow: 0 3px 12px rgba(0,0,0,0.12) !important;
+# }}
 /* Theme toggle — compact (no use_container_width) */
 [data-testid="stSidebar"] .stButton > button:not([style*="width: 100%"]) {{
     background: {btn_tog_bg} !important;
     color: {btn_tog_text} !important;
     border: 1px solid {btn_tog_bdr} !important;
+    width: 2.4rem !important;
+    height: 2.4rem !important;
+    min-width: 2.4rem !important;
+    padding: 0 !important;
+    font-size: 1.1rem !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
+    font-variant-emoji: text !important;
 }}
 [data-testid="stSidebar"] .stButton > button:not([style*="width: 100%"]):hover {{
     background: {btn_tog_hbg} !important;
@@ -786,7 +809,7 @@ def render_sidebar():
 
     with st.sidebar:
         # ── Brand + toggle ──
-        col_brand, col_toggle = st.columns([5, 1])
+        col_brand, col_toggle = st.columns([4, 1])
         with col_brand:
             st.markdown(
                 '<div class="sb-brand">'
