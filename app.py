@@ -388,18 +388,6 @@ header[data-testid="stHeader"] {{ background: transparent !important; }}
     vertical-align: middle !important;
 }}
 
-# /* Theme toggle — compact (no use_container_width) */
-# [data-testid="stSidebar"] .stButton > button:not([style*="width: 100%"]) {{
-#     background: {btn_tog_bg} !important;
-#     color: {btn_tog_text} !important;
-#     border: 1px solid {btn_tog_bdr} !important;
-# }}
-# [data-testid="stSidebar"] .stButton > button:not([style*="width: 100%"]):hover {{
-#     background: {btn_tog_hbg} !important;
-#     border-color: {btn_tog_hbdr} !important;
-#     transform: translateY(-1px) !important;
-#     box-shadow: 0 3px 12px rgba(0,0,0,0.12) !important;
-# }}
 /* Theme toggle — compact (no use_container_width) */
 [data-testid="stSidebar"] .stButton > button:not([style*="width: 100%"]) {{
     background: {btn_tog_bg} !important;
@@ -822,7 +810,7 @@ def render_sidebar():
                 unsafe_allow_html=True,
             )
         with col_toggle:
-            tog_icon = "☀" if theme == "dark" else "🌙"
+            tog_icon = "☀️" if theme == "dark" else "🌙"
             tog_tip  = "Switch to Light mode" if theme == "dark" else "Switch to Dark mode"
             if st.button(tog_icon, key="theme_toggle", help=tog_tip):
                 st.session_state.theme = "light" if theme == "dark" else "dark"
